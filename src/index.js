@@ -175,4 +175,42 @@ const ManipulateDOM = (() => {
         return form;
     }
 
+    const reloadProjects = () => {
+        const projectsDOM = document.querySelector(".list-projects");
+        while (projectsDOM.firstChild) {
+            projectsDOM.removeChild(projectsDOM.lastChild);
+        }
+        putProjects();
+    }
+
+    const InitialEvents = () => {
+        const btnAddProject = document.querySelector("#btnAddProject");
+        const btnBack = document.querySelector("#btnBackProject");
+        btnAddProject.addEventListener("click", (e) => {
+            const projectDOM = document.querySelector(".list-projects");
+
+            e.target.classList.add("hidden");
+            btnBack.classList.remove("hidden");
+            while (projectDOM.firstChild) {
+                projectDOM.removeChild(projectDOM.lastChild);
+            }
+            projectDOM.replaceChildren(createNewProjectDOM());
+
+        });
+        btnBack.addEventListener("click", (e) => {
+            e.target.classList.add("hidden");
+            btnAddProject.classList.remove("hidden");
+            reloadProjects();
+        });
+    }
+
+    const init = () => {
+        reloadProjects();
+        InitialEvents();
+    }
+
+    return { init }
+
 })();
+
+ManipulateDOM.init();
