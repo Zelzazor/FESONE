@@ -130,4 +130,49 @@ const ManipulateDOM = (() => {
         });
         return form;
     }
+    const EditProjectDOM = (project, index) => {
+        let form = document.createElement("div");
+        form.classList.add("form-add");
+        let txtTitle = document.createElement("input");
+        let lblTitle = document.createElement("label");
+        lblTitle.htmlFor = "txtTitle";
+        lblTitle.textContent = "Title:";
+        let lblDescription = document.createElement("label");
+        lblDescription.htmlFor = "txtDescription";
+        lblDescription.textContent = "Description:";
+        txtTitle.type = "text";
+        txtTitle.id = "txtTitle";
+        txtTitle.value = project.title;
+        let txtDescription = document.createElement("input");
+        txtDescription.type = "text";
+        txtDescription.id = "txtDesc";
+        txtDescription.value = project.description;
+        let btnSubmit = document.createElement("button");
+        btnSubmit.textContent = "Edit";
+        btnSubmit.classList.add("btn-aside");
+        let Error = document.createElement("p");
+        Error.classList.add("hidden");
+        Error.classList.add("error");
+        form.appendChild(lblTitle);
+        form.appendChild(txtTitle);
+        form.appendChild(lblDescription);
+        form.appendChild(txtDescription);
+        form.appendChild(btnSubmit);
+        form.appendChild(Error);
+        btnSubmit.addEventListener("click", () => {
+            if (txtTitle.value !== "" && txtDescription.value !== "") {
+                Projects.editProject(index, txtTitle.value, txtDescription.value);
+                reloadProjects();
+                document.querySelector("#btnBackProject").classList.add("hidden");
+                document.querySelector("#btnAddProject").classList.remove("hidden");
+            }
+            else {
+                Error.textContent = "ERROR: Fields are still empty";
+                Error.classList.remove("hidden");
+            }
+        })
+
+        return form;
+    }
+
 })();
