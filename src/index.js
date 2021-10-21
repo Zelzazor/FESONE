@@ -1,3 +1,4 @@
+import { format, parse } from 'date-fns';
 import { Projects } from './Projects';
 import { SVG } from './svg';
 
@@ -173,6 +174,80 @@ const ManipulateDOM = (() => {
         })
 
         return form;
+    }
+
+    const todosDOM = (index) => {
+        let todowrap = document.createElement("div");
+        todowrap.classList.add("todowrap");
+        Projects.getProject(index).getAllToDos().forEach((ToDo, j) => {
+            let todo = document.createElement("div");
+            todo.classList.add("todo");
+            switch (ToDo.priority.toLowerCase()) {
+                case 'low': todo.classList.add("low-p"); break;
+                case 'medium': todo.classList.add("medium-p"); break;
+                case 'high': todo.classList.add("high-p"); break;
+
+            }
+            let todo_info = document.createElement("div");
+            todo_info.classList.add("todo-info");
+            let todo_buttons = document.createElement("div");
+            todo_buttons.classList.add("todo-btns");
+            todo.dataset.id = j;
+            let pTitle = document.createElement("p");
+            pTitle.classList.add("todo-title");
+            pTitle.textContent = ToDo.title;
+            let pDescription = document.createElement("p");
+            pDescription.classList.add("todo-description");
+            pDescription.textContent = ToDo.description;
+            let pDate = document.createElement("p");
+            pDate.classList.add("todo-date");
+            pDate.textContent = format(ToDo.duedate, 'PPPP, HH:mm');
+            let btnEdit = document.createElement("button");
+            let btnDelete = document.createElement("button");
+            let checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = ToDo.checked;
+            btnDelete.id = "btnBorrarToDo";
+            btnEdit.id = "btnEditarToDo";
+            checkbox.addEventListener("click", ()=>{
+                Projects.changeCheck(index,j,checkbox.checked);
+                const todos = document.querySelector(".todos");
+                while (todos.firstChild) {
+                    todos.removeChild(todos.lastChild);
+                }
+                todos.appendChild(todosDOM(index));
+                todos.appendChild(barDOM(index));
+            });
+            btnEdit.innerHTML = SVG.editBtn();
+            btnDelete.innerHTML = SVG.deleteBtn();
+            btnEdit.addEventListener("click", () => {
+                let todowrap = document.querySelector(".todowrap");
+
+                while (todowrap.firstChild) {
+                    todowrap.removeChild(todowrap.lastChild);
+                }
+                todowrap.appendChild(configTodoDOM(index, j,ToDo));
+            });
+            btnDelete.addEventListener("click", () => { 
+                const todos = document.querySelector(".todos");
+                Projects.deleteToDofromProject(index,j);
+                while (todos.firstChild) {
+                    todos.removeChild(todos.lastChild);
+                }
+                todos.appendChild(todosDOM(index));
+                todos.appendChild(barDOM(index));
+            });
+            todo_buttons.appendChild(btnEdit);
+            todo_buttons.appendChild(btnDelete);
+            todo_buttons.appendChild(checkbox);
+            todo_info.appendChild(pTitle);
+            todo_info.appendChild(pDescription);
+            todo_info.appendChild(pDate);
+            todo.appendChild(todo_info);
+            todo.appendChild(todo_buttons);
+            todowrap.appendChild(todo);
+        });
+        return todowrap;
     }
 
     const reloadProjects = () => {
