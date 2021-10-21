@@ -4,7 +4,7 @@ import { SVG } from './svg';
 const ManipulateDOM = (() => {
     const putProjects = () => {
         const projectsDOM = document.querySelector('.list-projects');
-        
+
         Projects.getAllProjects().forEach((project, index) => {
             let projectDOM = document.createElement("div");
             projectDOM.dataset.id = index;
@@ -85,5 +85,49 @@ const ManipulateDOM = (() => {
         wrap.appendChild(info);
         wrap.appendChild(wrapbuttons);
         return wrap;
+    }
+
+    const createNewProjectDOM = () => {
+        let form = document.createElement("div");
+        form.classList.add("form-add");
+        let txtTitle = document.createElement("input");
+        let lblTitle = document.createElement("label");
+        lblTitle.htmlFor = "txtTitle";
+        lblTitle.textContent = "Title:";
+        let lblDescription = document.createElement("label");
+        lblDescription.htmlFor = "txtDescription";
+        lblDescription.textContent = "Description:";
+        txtTitle.type = "text";
+        txtTitle.id = "txtTitle";
+        let txtDescription = document.createElement("input");
+        txtDescription.type = "text";
+        txtDescription.id = "txtDesc";
+        let btnSubmit = document.createElement("button");
+        btnSubmit.textContent = "Create";
+        btnSubmit.classList.add("btn-aside");
+        let Error = document.createElement("p");
+        Error.classList.add("hidden");
+        Error.classList.add("error");
+        form.appendChild(lblTitle);
+        form.appendChild(txtTitle);
+        form.appendChild(lblDescription);
+        form.appendChild(txtDescription);
+        form.appendChild(btnSubmit);
+        form.appendChild(Error);
+
+        // Submit Add Button Action
+        btnSubmit.addEventListener("click", () => {
+            if (txtTitle.value !== "" && txtDescription.value !== "") {
+                Projects.addProject(txtTitle.value, txtDescription.value);
+                reloadProjects();
+                document.querySelector("#btnBackProject").classList.add("hidden");
+                document.querySelector("#btnAddProject").classList.remove("hidden");
+            }
+            else {
+                Error.textContent = "ERROR: Fields are still empty";
+                Error.classList.remove("hidden");
+            }
+        });
+        return form;
     }
 })();
