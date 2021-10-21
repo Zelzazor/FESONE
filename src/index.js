@@ -209,8 +209,8 @@ const ManipulateDOM = (() => {
             checkbox.checked = ToDo.checked;
             btnDelete.id = "btnBorrarToDo";
             btnEdit.id = "btnEditarToDo";
-            checkbox.addEventListener("click", ()=>{
-                Projects.changeCheck(index,j,checkbox.checked);
+            checkbox.addEventListener("click", () => {
+                Projects.changeCheck(index, j, checkbox.checked);
                 const todos = document.querySelector(".todos");
                 while (todos.firstChild) {
                     todos.removeChild(todos.lastChild);
@@ -226,11 +226,11 @@ const ManipulateDOM = (() => {
                 while (todowrap.firstChild) {
                     todowrap.removeChild(todowrap.lastChild);
                 }
-                todowrap.appendChild(configTodoDOM(index, j,ToDo));
+                todowrap.appendChild(configTodoDOM(index, j, ToDo));
             });
-            btnDelete.addEventListener("click", () => { 
+            btnDelete.addEventListener("click", () => {
                 const todos = document.querySelector(".todos");
-                Projects.deleteToDofromProject(index,j);
+                Projects.deleteToDofromProject(index, j);
                 while (todos.firstChild) {
                     todos.removeChild(todos.lastChild);
                 }
@@ -248,6 +248,35 @@ const ManipulateDOM = (() => {
             todowrap.appendChild(todo);
         });
         return todowrap;
+    }
+    const barDOM = (index) => {
+        let bar = document.createElement("div");
+        bar.classList.add("bar");
+        let input = document.createElement("input");
+        input.type = "text";
+        input.classList.add("text-fixed");
+        let buttonAdd = document.createElement("button");
+        buttonAdd.classList.add("btn-fixed");
+        buttonAdd.textContent = "+";
+        bar.appendChild(input);
+        bar.appendChild(buttonAdd);
+        buttonAdd.addEventListener("click", () => {
+            if (input.value !== "") {
+                const todos = document.querySelector(".todos");
+                Projects.addToDoOnProject(index, input.value);
+                while (todos.firstChild) {
+                    todos.removeChild(todos.lastChild);
+                }
+                todos.appendChild(todosDOM(index));
+                todos.appendChild(barDOM(index));
+            }
+            else {
+                input.placeholder = "You should introduce something here.";
+            }
+
+        })
+
+        return bar;
     }
 
     const reloadProjects = () => {
