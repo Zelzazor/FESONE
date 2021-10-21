@@ -1,0 +1,24 @@
+{
+  "name": "todo-list-fesone",
+  "version": "1.0.0",
+  "description": "Este es el proyecto final de la asignatura Procesos de Software.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://INTEC-IDS311-01-2021-03-Equipo-13@dev.azure.com/INTEC-IDS311-01-2021-03-Equipo-13/INTEC-IDS311-01-2021-03-Equipo-13/_git/INTEC-IDS311-01-2021-03-Equipo-13"
+  },
+  "author": "Equipo 13",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^7.12.1",
+    "webpack": "^5.2.0",
+    "webpack-cli": "^4.1.0"
+  },
+  "dependencies": {
+    "date-fns": "^2.16.1"
+  }
+}
